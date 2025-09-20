@@ -1,0 +1,4 @@
+# requirements.txt
+pytest>=7.0.0
+black
+flake8
