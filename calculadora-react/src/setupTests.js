@@ -1,9 +1,10 @@
 import '@testing-library/jest-dom';
 
 // Suprimir warnings específicos en entorno de test
-const originalError = console.error;
+const originalError = console.error; // eslint-disable-line no-console
 beforeAll(() => {
   console.error = (...args) => {
+    // eslint-disable-line no-console
     if (
       typeof args[0] === 'string' &&
       (args[0].includes('ReactDOMTestUtils.act') ||
@@ -13,10 +14,10 @@ beforeAll(() => {
     ) {
       return;
     }
-    originalError.call(console, ...args);
+    originalError.call(console, ...args); // eslint-disable-line no-console
   };
 });
 
 afterAll(() => {
-  console.error = originalError;
+  console.error = originalError; // eslint-disable-line no-console
 });
