@@ -4,8 +4,8 @@ import Calculator from './Calculator';
 
 /**
  * Regression Tests - Calculator Component
- * 
- * These tests ensure that previously working functionality 
+ *
+ * These tests ensure that previously working functionality
  * continues to work after changes are made to the codebase.
  * They focus on critical features that should never break.
  */
@@ -73,7 +73,9 @@ describe('Calculator Regression Tests', () => {
 
       // Should start in basic mode
       expect(screen.getByText('Científica')).toBeInTheDocument();
-      expect(screen.queryByRole('button', { name: 'sin' })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'sin' })
+      ).not.toBeInTheDocument();
 
       // Toggle to scientific mode
       await user.click(screen.getByText('Científica'));
@@ -83,7 +85,9 @@ describe('Calculator Regression Tests', () => {
       // Toggle back to basic mode
       await user.click(screen.getByText('Básica'));
       expect(screen.getByText('Científica')).toBeInTheDocument();
-      expect(screen.queryByRole('button', { name: 'sin' })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'sin' })
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -122,8 +126,20 @@ describe('Calculator Regression Tests', () => {
       await user.click(screen.getByText('Científica'));
 
       // All scientific functions should be present
-      const scientificFunctions = ['sin', 'cos', 'tan', 'log', 'ln', '√', 'x²', 'x³', '!', 'π', 'e'];
-      
+      const scientificFunctions = [
+        'sin',
+        'cos',
+        'tan',
+        'log',
+        'ln',
+        '√',
+        'x²',
+        'x³',
+        '!',
+        'π',
+        'e',
+      ];
+
       scientificFunctions.forEach(func => {
         expect(screen.getByRole('button', { name: func })).toBeInTheDocument();
       });
@@ -252,12 +268,12 @@ describe('Calculator Regression Tests', () => {
       render(<Calculator />);
 
       const startTime = performance.now();
-      
+
       // Rapid button clicks should all register
       await user.click(screen.getByRole('button', { name: '1' }));
       await user.click(screen.getByRole('button', { name: '2' }));
       await user.click(screen.getByRole('button', { name: '3' }));
-      
+
       const endTime = performance.now();
 
       expect(screen.getByTestId('display')).toHaveTextContent('123');
@@ -270,10 +286,30 @@ describe('Calculator Regression Tests', () => {
       render(<Calculator />);
 
       // Basic mode buttons
-      const basicButtons = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '*', '/', '=', 'AC', '.'];
-      
+      const basicButtons = [
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '+',
+        '-',
+        '*',
+        '/',
+        '=',
+        'AC',
+        '.',
+      ];
+
       basicButtons.forEach(buttonName => {
-        expect(screen.getByRole('button', { name: buttonName })).toBeInTheDocument();
+        expect(
+          screen.getByRole('button', { name: buttonName })
+        ).toBeInTheDocument();
       });
 
       // Mode toggle button

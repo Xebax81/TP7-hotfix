@@ -4,7 +4,7 @@ import Calculator from './Calculator';
 
 /**
  * Integration Tests - Calculator Component
- * 
+ *
  * These tests validate complete user workflows and interactions
  * between multiple components and features working together.
  */
@@ -179,7 +179,7 @@ describe('Calculator Integration Tests', () => {
     await user.click(screen.getByText('Científica'));
 
     // Test workflow: √(4²) + 3! = 4 + 6 = 10
-    
+
     // Step 1: Calculate 4²
     await user.click(screen.getByRole('button', { name: '4' }));
     await user.click(screen.getByRole('button', { name: 'x²' }));
