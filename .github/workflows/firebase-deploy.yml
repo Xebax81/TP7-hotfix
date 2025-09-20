@@ -143,11 +143,7 @@ jobs:
         echo "Regression tests: PASSED"
         echo ""
         echo "Ready to deploy to production!"
-        echo "CONFIGURACION PENDIENTE:"
-        echo "   1. Ve a Settings > Environments en tu repo"
-        echo "   2. Crea environment 'production'"
-        echo "   3. Habilita 'Required reviewers'"
-        echo "   4. Descomenta la linea 'environment: production' arriba"
+       
 
   deploy-firebase:
     name: Deploy to Firebase
