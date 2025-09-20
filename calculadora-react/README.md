@@ -4,7 +4,9 @@ Una calculadora científica desarrollada en React que replica todas las funcione
 
 ## 🌟 Demo en Vivo
 
-🚀 **[Ver Aplicación Live](https://calculadora-react-tp7.web.app)** (Deployment automático via Firebase Hosting)
+🚀 **[Ver Aplicación Live](https://calculadora-react-tp7.web.app)** 
+
+✅ **Deployment automático configurado** via Firebase Hosting & GitHub Actions
 
 ## Características
 
