@@ -1,0 +1,37 @@
+name: Hotfix CI/CD
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' # Puedes cambiar a la versión de Python que necesites
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8 black # Instalar linter y formateador
+
+      - name: Run linter (Flake8)
+        run: |
+          flake8 .
+
+      - name: Run code formatter (Black)
+        run: |
+          black --check .
+
+      - name: Run unit tests
+        run: |
+          python -m unittest discover tests
