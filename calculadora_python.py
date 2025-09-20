@@ -18,12 +18,13 @@ class Calculadora:
         return a / b
 
     def potencia(self, base, exponente):
-        return base ** exponente
+        return base**exponente
 
     def factorial(self, n):
         if n < 0:
-            raise ValueError("El factorial no está definido para números "
-                             "negativos")
+            raise ValueError(
+                "El factorial no está definido para números " "negativos"
+            )
         if n == 0 or n == 1:
             return 1
 
@@ -47,8 +48,10 @@ class Calculadora:
 
     def raiz_cuadrada(self, x):
         if x < 0:
-            raise ValueError("No se puede calcular la raíz cuadrada de un "
-                             "número negativo")
+            raise ValueError(
+                "No se puede calcular la raíz cuadrada de un "
+                "número negativo"
+            )
         return math.sqrt(x)
 
     def valor_absoluto(self, x):
@@ -72,8 +75,9 @@ class Calculadora:
 
     def logaritmo(self, x):
         if x <= 0:
-            raise ValueError("El logaritmo solo está definido para números "
-                             "positivos")
+            raise ValueError(
+                "El logaritmo solo está definido para números " "positivos"
+            )
         return math.log10(x)
 
     def seno(self, x):
