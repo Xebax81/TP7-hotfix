@@ -34,7 +34,28 @@ Este proyecto incluye **CI/CD completo** con GitHub Actions y Firebase Hosting:
 
 ### Setup Firebase (una sola vez)
 
-Ver guía completa: [`FIREBASE_SETUP.md`](./FIREBASE_SETUP.md)
+Ver guía completa: [`FIREBASE_SETUP.md`](../FIREBASE_SETUP.md)
+
+### 🚨 ¿Problemas con CI/CD?
+
+Si el deployment automático falla por permisos, tienes estas opciones:
+
+#### Deployment Manual (Rápido)
+```bash
+# En Windows
+./deploy.bat
+
+# En Linux/Mac  
+./deploy.sh
+```
+
+#### Configurar Firebase Token
+```bash
+firebase login:ci
+# Añadir el token a GitHub Secrets como FIREBASE_TOKEN
+```
+
+Ver detalles completos en [`FIREBASE_SETUP.md`](../FIREBASE_SETUP.md)
 
 ## Instalación y Ejecución
 

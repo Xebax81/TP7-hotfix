@@ -137,6 +137,45 @@ npm run firebase:init
 
 ## 🚨 Solución de Problemas
 
+### Error: "Resource not accessible by integration"
+
+**Problema**: El token `GITHUB_TOKEN` no tiene permisos suficientes para crear check runs.
+
+**Soluciones disponibles:**
+
+#### Opción 1: Usar Firebase CLI Token (Recomendado)
+
+1. **Generar Firebase Token:**
+   ```bash
+   firebase login:ci
+   ```
+   Esto generará un token personal.
+
+2. **Añadir a GitHub Secrets:**
+   - GitHub repo → Settings → Secrets → Actions
+   - Nuevo secret: `FIREBASE_TOKEN`
+   - Valor: El token generado
+
+3. **Usar workflow simple:**
+   El archivo `firebase-simple.yml` está disponible como alternativa.
+
+#### Opción 2: Configurar Service Account (Más seguro)
+
+1. **Firebase Console** → Configuración → Cuentas de servicio
+2. **Generar nueva clave privada** 
+3. **Descargar archivo JSON**
+4. **GitHub Secrets:**
+   - Nombre: `FIREBASE_SERVICE_ACCOUNT_CALCULADORA_REACT_TP7`
+   - Valor: Contenido completo del JSON
+
+#### Opción 3: Permisos de Repositorio
+
+Si tienes permisos de admin del repo:
+
+1. **GitHub repo** → Settings → Actions → General
+2. **Workflow permissions** → "Read and write permissions"
+3. **Save**
+
 ### Error: "Project not found"
 - Verifica que el project ID en `.firebaserc` sea correcto
 - Asegúrate que el proyecto existe en Firebase Console

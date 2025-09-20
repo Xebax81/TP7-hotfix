@@ -10,6 +10,13 @@ on:
     paths:
       - 'calculadora-react/**'
 
+# Añadir permisos explícitos
+permissions:
+  contents: read
+  checks: write
+  statuses: write
+  pull-requests: write
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -84,11 +91,12 @@ jobs:
     - name: Deploy to Firebase Hosting
       uses: FirebaseExtended/action-hosting-deploy@v0
       with:
-        repoToken: ${{ secrets.GITHUB_TOKEN }}
         firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CALCULADORA_REACT_TP7 }}
-        projectId: Calculadora-react-tp7
+        projectId: calculadora-react-tp7
         channelId: live
         entryPoint: ./calculadora-react
+        # Deshabilitar check runs para evitar problemas de permisos
+        target: Calculadora-react-tp7
 
   deploy-preview:
     needs: build-and-test
@@ -121,8 +129,9 @@ jobs:
     - name: Deploy Preview to Firebase Hosting
       uses: FirebaseExtended/action-hosting-deploy@v0
       with:
-        repoToken: ${{ secrets.GITHUB_TOKEN }}
         firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CALCULADORA_REACT_TP7 }}
-        projectId: Calculadora-react-tp7
+        projectId: calculadora-react-tp7
         channelId: preview
         entryPoint: ./calculadora-react
+        # Para preview, podemos añadir el repoToken para comentarios en PR
+        repoToken: ${{ secrets.GITHUB_TOKEN }}
