@@ -22,16 +22,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install flake8 black # Instalar linter y formateador
 
       - name: Run linter (Flake8)
         run: |
-          flake8 .
+          flake8 calculadora_python.py test_calculadora.py
 
       - name: Run code formatter (Black)
         run: |
-          black --check .
+          black --check calculadora_python.py test_calculadora.py
 
       - name: Run unit tests
         run: |
-          python -m unittest discover tests
+          pytest test_calculadora.py -v
