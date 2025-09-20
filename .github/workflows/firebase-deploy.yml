@@ -130,7 +130,7 @@ jobs:
     name: Approve Deployment
     needs: [code-quality, build-and-test, integration-tests, regression-tests]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/produccion'
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/produccion' || github.base_ref == 'develop'
     environment: production  
     
     steps:
@@ -149,7 +149,7 @@ jobs:
     name: Deploy to Firebase
     needs: [approval-gate]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/produccion'
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/produccion' || github.base_ref == 'develop'
     defaults:
       run:
         working-directory: ./calculadora-react
