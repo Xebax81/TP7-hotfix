@@ -3,7 +3,6 @@ name: React Calculator - Firebase Deploy
 
 
 on:
-  
   pull_request:
     branches: [ develop]
 
