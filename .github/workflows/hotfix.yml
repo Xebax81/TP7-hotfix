@@ -4,9 +4,7 @@ on:
   pull_request:
     branches:
       - develop
-  push:
-    branches:
-      - hotfix/*
+  
 
 jobs:
   unit-tests:
@@ -120,5 +118,5 @@ jobs:
           assert calc.sumar(2, 3) == 5
           assert calc.multiplicar(4, 5) == 20
           assert abs(calc.raiz_cuadrada(16) - 4.0) < 1e-10
-          print('✅ Smoke tests passed - Calculator is working correctly')
+          print('Smoke tests passed - Calculator is working correctly')
           "
