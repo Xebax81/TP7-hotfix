@@ -1,115 +1,117 @@
 class Calculadora {
-    sumar(a, b) {
-        return a + b;
+  sumar(a, b) {
+    return a + b;
+  }
+
+  restar(a, b) {
+    return a - b;
+  }
+
+  multiplicar(a, b) {
+    return a * b;
+  }
+
+  dividir(a, b) {
+    if (b === 0) {
+      throw new Error('No se puede dividir por cero');
+    }
+    return a / b;
+  }
+
+  potencia(base, exponente) {
+    return Math.pow(base, exponente);
+  }
+
+  factorial(n) {
+    if (n < 0) {
+      throw new Error('El factorial no está definido para números negativos');
+    }
+    if (n === 0 || n === 1) {
+      return 1;
     }
 
-    restar(a, b) {
-        return a - b;
+    let resultado = 1;
+    for (let i = 2; i <= n; i++) {
+      resultado *= i;
     }
+    return resultado;
+  }
 
-    multiplicar(a, b) {
-        return a * b;
+  modulo(a, b) {
+    if (b === 0) {
+      throw new Error('No se puede dividir por cero');
     }
+    return a % b;
+  }
 
-    dividir(a, b) {
-        if (b === 0) {
-            throw new Error("No se puede dividir por cero");
-        }
-        return a / b;
+  promedio(numeros) {
+    if (!numeros || numeros.length === 0) {
+      throw new Error('La lista no puede estar vacía');
     }
+    return numeros.reduce((sum, num) => sum + num, 0) / numeros.length;
+  }
 
-    potencia(base, exponente) {
-        return Math.pow(base, exponente);
+  esPar(n) {
+    return n % 2 === 0;
+  }
+
+  raizCuadrada(x) {
+    if (x < 0) {
+      throw new Error(
+        'No se puede calcular la raíz cuadrada de un número negativo'
+      );
     }
+    return Math.sqrt(x);
+  }
 
-    factorial(n) {
-        if (n < 0) {
-            throw new Error("El factorial no está definido para números negativos");
-        }
-        if (n === 0 || n === 1) {
-            return 1;
-        }
+  valorAbsoluto(x) {
+    return Math.abs(x);
+  }
 
-        let resultado = 1;
-        for (let i = 2; i <= n; i++) {
-            resultado *= i;
-        }
-        return resultado;
+  redondear(numero, decimales) {
+    try {
+      return Number(parseFloat(numero).toFixed(parseInt(decimales)));
+    } catch (error) {
+      throw new Error('Los parámetros deben ser numéricos');
     }
+  }
 
-    modulo(a, b) {
-        if (b === 0) {
-            throw new Error("No se puede dividir por cero");
-        }
-        return a % b;
+  maximo(lista) {
+    if (!lista || lista.length === 0) {
+      throw new Error('La lista no puede estar vacía');
     }
+    return Math.max(...lista);
+  }
 
-    promedio(numeros) {
-        if (!numeros || numeros.length === 0) {
-            throw new Error("La lista no puede estar vacía");
-        }
-        return numeros.reduce((sum, num) => sum + num, 0) / numeros.length;
+  minimo(lista) {
+    if (!lista || lista.length === 0) {
+      throw new Error('La lista no puede estar vacía');
     }
+    return Math.min(...lista);
+  }
 
-    esPar(n) {
-        return n % 2 === 0;
+  logaritmo(x) {
+    if (x <= 0) {
+      throw new Error('El logaritmo solo está definido para números positivos');
     }
+    return Math.log10(x);
+  }
 
-    raizCuadrada(x) {
-        if (x < 0) {
-            throw new Error("No se puede calcular la raíz cuadrada de un número negativo");
-        }
-        return Math.sqrt(x);
-    }
+  seno(x) {
+    return Math.sin(x);
+  }
 
-    valorAbsoluto(x) {
-        return Math.abs(x);
-    }
+  coseno(x) {
+    return Math.cos(x);
+  }
 
-    redondear(numero, decimales) {
-        try {
-            return Number(parseFloat(numero).toFixed(parseInt(decimales)));
-        } catch (error) {
-            throw new Error("Los parámetros deben ser numéricos");
-        }
-    }
+  tangente(x) {
+    return Math.tan(x);
+  }
 
-    maximo(lista) {
-        if (!lista || lista.length === 0) {
-            throw new Error("La lista no puede estar vacía");
-        }
-        return Math.max(...lista);
-    }
-
-    minimo(lista) {
-        if (!lista || lista.length === 0) {
-            throw new Error("La lista no puede estar vacía");
-        }
-        return Math.min(...lista);
-    }
-
-    logaritmo(x) {
-        if (x <= 0) {
-            throw new Error("El logaritmo solo está definido para números positivos");
-        }
-        return Math.log10(x);
-    }
-
-    seno(x) {
-        return Math.sin(x);
-    }
-
-    coseno(x) {
-        return Math.cos(x);
-    }
-
-    tangente(x) {
-        return Math.tan(x);
-    }
-
-    porcentaje(valor, porcentaje) {
-        return (valor * porcentaje) / 100;
-    }
+  porcentaje(valor, porcentaje) {
+    return (valor * porcentaje) / 100;
+  }
 }
 
 export default Calculadora;

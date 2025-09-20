@@ -1,10 +1,11 @@
 name: React Calculator - Firebase Deploy
 
+
+
 on:
-  push:
-    branches: [ develop, main, produccion ]
+  
   pull_request:
-    branches: [ develop, main ]
+    branches: [ develop]
 
 permissions:
   contents: read
@@ -13,8 +14,37 @@ permissions:
   pull-requests: write
 
 jobs:
-  build-and-test:
+  code-quality:
+    name: Code Quality & Linting
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./calculadora-react
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: calculadora-react/package-lock.json
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run ESLint
+      run: npm run lint
+
+    - name: Check Prettier formatting
+      run: npm run format:check
+
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    needs: code-quality
     defaults:
       run:
         working-directory: ./calculadora-react
@@ -46,8 +76,83 @@ jobs:
         path: calculadora-react/build/
         retention-days: 5
 
-  deploy-firebase:
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
     needs: build-and-test
+    defaults:
+      run:
+        working-directory: ./calculadora-react
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: calculadora-react/package-lock.json
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run integration tests
+      run: npm test -- --testNamePattern="Integration" --watchAll=false --verbose
+
+  regression-tests:
+    name: Regression Tests
+    runs-on: ubuntu-latest
+    needs: integration-tests
+    defaults:
+      run:
+        working-directory: ./calculadora-react
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: calculadora-react/package-lock.json
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run regression tests
+      run: npm test -- --testNamePattern="Regression" --watchAll=false --verbose
+
+  
+  approval-gate:
+    name: Approve Deployment
+    needs: [code-quality, build-and-test, integration-tests, regression-tests]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/produccion'
+    environment: production  
+    
+    steps:
+    - name: Manual approval checkpoint
+      run: |
+        echo "All tests passed successfully!"
+        echo "Code quality: PASSED"
+        echo "Unit tests: PASSED" 
+        echo "Integration tests: PASSED"
+        echo "Regression tests: PASSED"
+        echo ""
+        echo "Ready to deploy to production!"
+        echo "CONFIGURACION PENDIENTE:"
+        echo "   1. Ve a Settings > Environments en tu repo"
+        echo "   2. Crea environment 'production'"
+        echo "   3. Habilita 'Required reviewers'"
+        echo "   4. Descomenta la linea 'environment: production' arriba"
+
+  deploy-firebase:
+    name: Deploy to Firebase
+    needs: [approval-gate]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/produccion'
     defaults:
