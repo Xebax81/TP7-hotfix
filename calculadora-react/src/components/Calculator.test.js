@@ -3,7 +3,7 @@ import Calculator from './Calculator';
 
 test('renders calculator title', () => {
   render(<Calculator />);
-  const titleElement = screen.getByText(/Calculadora React/i);
+  const titleElement = screen.getByText(/Calculadora TP7/i);
   expect(titleElement).toBeInTheDocument();
 });
 

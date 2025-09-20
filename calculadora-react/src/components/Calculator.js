@@ -138,7 +138,7 @@ const Calculator = () => {
     return (
         <div className="calculator">
             <div className="calculator-header">
-                <h1>Calculadora React</h1>
+                <h1>Calculadora TP7</h1>
                 <button 
                     className="mode-toggle"
                     onClick={toggleScientific}

@@ -1,14 +1,10 @@
-name: Firebase Deploy - Calculator React
+name: React Calculator - Firebase Deploy
 
 on:
   push:
     branches: [ develop, main, produccion ]
-    paths: 
-      - 'calculadora-react/**'
   pull_request:
     branches: [ develop, main ]
-    paths:
-      - 'calculadora-react/**'
 
 permissions:
   contents: read
