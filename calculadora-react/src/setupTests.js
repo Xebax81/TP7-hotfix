@@ -3,8 +3,8 @@ import '@testing-library/jest-dom';
 // Suprimir warnings específicos en entorno de test
 const originalError = console.error; // eslint-disable-line no-console
 beforeAll(() => {
+  // eslint-disable-next-line no-console
   console.error = (...args) => {
-    // eslint-disable-line no-console
     if (
       typeof args[0] === 'string' &&
       (args[0].includes('ReactDOMTestUtils.act') ||
