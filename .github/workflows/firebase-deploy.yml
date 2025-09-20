@@ -1,14 +1,9 @@
 name: React Calculator - Firebase Deploy
 
-# CONFIGURACIÓN REQUERIDA PARA APROBACIÓN MANUAL:
-# 1. Ve a Settings > Environments en tu repositorio de GitHub
-# 2. Crea un environment llamado "production"
-# 3. Habilita "Required reviewers" y agrega tu usuario
-# 4. Opcional: Agrega un deployment delay si lo deseas
+
 
 on:
-  push:
-    branches: [ develop, main, produccion ]
+  
   pull_request:
     branches: [ develop]
 
