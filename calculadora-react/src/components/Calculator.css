@@ -1,230 +1,242 @@
 /* Calculator.css */
 .calculator {
-    max-width: 400px;
-    margin: 20px auto;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 400px;
+  margin: 20px auto;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .calculator-header {
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .calculator-header h1 {
-    color: white;
-    margin: 0 0 15px 0;
-    font-size: 2rem;
-    font-weight: 300;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: white;
+  margin: 0 0 15px 0;
+  font-size: 2rem;
+  font-weight: 300;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .mode-toggle {
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
 .mode-toggle:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
 }
 
 .display {
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 20px;
-    text-align: right;
-    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: right;
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .display-value {
-    color: #00ff88;
-    font-size: 2.5rem;
-    font-weight: 300;
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    word-break: break-all;
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+  color: #00ff88;
+  font-size: 2.5rem;
+  font-weight: 300;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  word-break: break-all;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
 }
 
 .error-message {
-    color: #ff4757;
-    font-size: 0.9rem;
-    margin-top: 8px;
-    min-height: 20px;
-    text-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+  color: #ff4757;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  min-height: 20px;
+  text-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
 }
 
 /* Grid para calculadora básica */
 .button-grid.basic {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
 }
 
 /* Grid para calculadora científica */
 .button-grid.scientific {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    grid-template-rows: repeat(7, 60px);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  grid-template-rows: repeat(7, 60px);
 }
 
 /* En modo científico, el botón de igual no ocupa dos filas */
 .button-grid.scientific .equals {
-    grid-row: span 1;
-    height: 60px;
+  grid-row: span 1;
+  height: 60px;
 }
 
 /* Botón cero en modo científico */
 .button-grid.scientific .zero {
-    grid-column: span 2;
+  grid-column: span 2;
 }
 
 /* Estilos específicos para botones científicos */
 .button-grid .scientific-function {
-    background: rgba(116, 185, 255, 0.8) !important;
-    font-size: 0.9rem;
-    font-weight: 600;
+  background: rgba(116, 185, 255, 0.8) !important;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .button-grid .scientific-function:hover {
-    background: rgba(116, 185, 255, 1) !important;
+  background: rgba(116, 185, 255, 1) !important;
 }
 
 .button-grid button {
-    background: rgba(255, 255, 255, 0.15);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 500;
-    height: 60px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 500;
+  height: 60px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .button-grid button:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .button-grid button:active {
-    transform: translateY(0);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Botones de función */
 .button-grid button.function {
-    background: rgba(255, 159, 67, 0.8);
-    font-weight: 600;
+  background: rgba(255, 159, 67, 0.8);
+  font-weight: 600;
 }
 
 .button-grid button.function:hover {
-    background: rgba(255, 159, 67, 1);
+  background: rgba(255, 159, 67, 1);
 }
 
 /* Botones de operadores */
 .button-grid button.operator {
-    background: rgba(255, 107, 107, 0.8);
-    font-weight: 600;
+  background: rgba(255, 107, 107, 0.8);
+  font-weight: 600;
 }
 
 .button-grid button.operator:hover {
-    background: rgba(255, 107, 107, 1);
+  background: rgba(255, 107, 107, 1);
 }
 
 /* Botón equals especial */
 .button-grid button.equals {
-    background: rgba(46, 213, 115, 0.8);
-    grid-row: span 2;
-    height: 132px;
+  background: rgba(46, 213, 115, 0.8);
+  grid-row: span 2;
+  height: 132px;
 }
 
 .button-grid button.equals:hover {
-    background: rgba(46, 213, 115, 1);
+  background: rgba(46, 213, 115, 1);
 }
 
 /* Botón zero especial */
 .button-grid button.zero {
-    grid-column: span 2;
+  grid-column: span 2;
 }
 
 /* Responsive design */
 @media (max-width: 480px) {
-    .calculator {
-        margin: 10px;
-        padding: 15px;
-        max-width: none;
-    }
-    
-    .display-value {
-        font-size: 2rem;
-        min-height: 50px;
-    }
-    
-    .button-grid button {
-        height: 50px;
-        font-size: 1rem;
-    }
-    
-    .button-grid.scientific {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 8px;
-        grid-template-rows: repeat(7, 50px);
-    }
-    
-    .button-grid.scientific .equals {
-        height: 50px;
-    }
-    
-    .button-grid button.equals {
-        height: 108px;
-    }
-    
-    .calculator-header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .button-grid .scientific-function {
-        font-size: 0.8rem;
-    }
+  .calculator {
+    margin: 10px;
+    padding: 15px;
+    max-width: none;
+  }
+
+  .display-value {
+    font-size: 2rem;
+    min-height: 50px;
+  }
+
+  .button-grid button {
+    height: 50px;
+    font-size: 1rem;
+  }
+
+  .button-grid.scientific {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    grid-template-rows: repeat(7, 50px);
+  }
+
+  .button-grid.scientific .equals {
+    height: 50px;
+  }
+
+  .button-grid button.equals {
+    height: 108px;
+  }
+
+  .calculator-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .button-grid .scientific-function {
+    font-size: 0.8rem;
+  }
 }
 
 /* Efectos adicionales */
 .calculator::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
-    border-radius: 22px;
-    z-index: -1;
-    filter: blur(6px);
-    opacity: 0.7;
-    animation: rainbow 3s ease-in-out infinite;
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    #ff6b6b,
+    #4ecdc4,
+    #45b7d1,
+    #96ceb4,
+    #ffeaa7
+  );
+  border-radius: 22px;
+  z-index: -1;
+  filter: blur(6px);
+  opacity: 0.7;
+  animation: rainbow 3s ease-in-out infinite;
 }
 
 @keyframes rainbow {
-    0%, 100% { filter: blur(6px) hue-rotate(0deg); }
-    50% { filter: blur(6px) hue-rotate(180deg); }
+  0%,
+  100% {
+    filter: blur(6px) hue-rotate(0deg);
+  }
+  50% {
+    filter: blur(6px) hue-rotate(180deg);
+  }
 }
