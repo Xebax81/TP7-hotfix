@@ -123,6 +123,6 @@ jobs:
       with:
         repoToken: ${{ secrets.GITHUB_TOKEN }}
         firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CALCULADORA_REACT_TP7 }}
-        projectId: calculadora-react-tp7
+        projectId: Calculadora-react-tp7
         channelId: preview
         entryPoint: ./calculadora-react
