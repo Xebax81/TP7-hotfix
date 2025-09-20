@@ -9,9 +9,7 @@ test('renders calculator title', () => {
 
 test('displays initial zero in display', () => {
   render(<Calculator />);
-  const displayElement = screen.getByRole('textbox', { name: /display/i }) || 
-                         screen.getByTestId('display') ||
-                         document.querySelector('.display-value');
+  const displayElement = screen.getByTestId('display');
   expect(displayElement).toHaveTextContent('0');
 });
 
@@ -20,7 +18,7 @@ test('can input numbers', () => {
   const button5 = screen.getByRole('button', { name: '5' });
   fireEvent.click(button5);
   
-  const displayElement = document.querySelector('.display-value');
+  const displayElement = screen.getByTestId('display');
   expect(displayElement).toHaveTextContent('5');
 });
 
@@ -33,7 +31,7 @@ test('can perform basic addition', () => {
   fireEvent.click(screen.getByRole('button', { name: '3' }));
   fireEvent.click(screen.getByRole('button', { name: '=' }));
   
-  const displayElement = document.querySelector('.display-value');
+  const displayElement = screen.getByTestId('display');
   expect(displayElement).toHaveTextContent('5');
 });
 
@@ -59,6 +57,34 @@ test('handles division by zero error', () => {
   fireEvent.click(screen.getByRole('button', { name: '0' }));
   fireEvent.click(screen.getByRole('button', { name: '=' }));
   
-  const displayElement = document.querySelector('.display-value');
+  const displayElement = screen.getByTestId('display');
   expect(displayElement).toHaveTextContent('Error');
+});
+
+test('clears display when AC is pressed', () => {
+  render(<Calculator />);
+  
+  // Input a number first
+  fireEvent.click(screen.getByRole('button', { name: '7' }));
+  let displayElement = screen.getByTestId('display');
+  expect(displayElement).toHaveTextContent('7');
+  
+  // Press AC
+  fireEvent.click(screen.getByRole('button', { name: 'AC' }));
+  displayElement = screen.getByTestId('display');
+  expect(displayElement).toHaveTextContent('0');
+});
+
+test('performs scientific operations', () => {
+  render(<Calculator />);
+  
+  // Switch to scientific mode
+  fireEvent.click(screen.getByText('Científica'));
+  
+  // Test square root of 9
+  fireEvent.click(screen.getByRole('button', { name: '9' }));
+  fireEvent.click(screen.getByRole('button', { name: '√' }));
+  
+  const displayElement = screen.getByTestId('display');
+  expect(displayElement).toHaveTextContent('3');
 });

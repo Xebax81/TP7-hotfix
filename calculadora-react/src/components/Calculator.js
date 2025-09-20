@@ -148,8 +148,16 @@ const Calculator = () => {
             </div>
             
             <div className="display">
-                <div className="display-value">{display}</div>
-                {error && <div className="error-message">{error}</div>}
+                <div 
+                    className="display-value" 
+                    data-testid="display"
+                    role="textbox"
+                    aria-label="calculator display"
+                    aria-readonly="true"
+                >
+                    {display}
+                </div>
+                {error && <div className="error-message" data-testid="error-message">{error}</div>}
             </div>
 
             <div className={`button-grid ${isScientific ? 'scientific' : 'basic'}`}>
