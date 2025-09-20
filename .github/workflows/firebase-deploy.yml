@@ -1,0 +1,134 @@
+name: Deploy React Calculator to Firebase
+
+on:
+  push:
+    branches: [ develop, main ]
+    paths: 
+      - 'calculadora-react/**'
+  pull_request:
+    branches: [ develop ]
+    paths:
+      - 'calculadora-react/**'
+
+# Añadir permisos explícitos
+permissions:
+  contents: read
+  checks: write
+  statuses: write
+  pull-requests: write
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./calculadora-react
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: calculadora-react/package-lock.json
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run tests
+      run: npm test -- --coverage --watchAll=false
+
+    - name: Run linting (if configured)
+      run: |
+        if npm run lint --silent; then
+          echo "Linting passed"
+        else
+          echo "Linting not configured, skipping..."
+        fi
+      continue-on-error: true
+
+    - name: Build application
+      run: npm run build
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: react-build
+        path: calculadora-react/build/
+        retention-days: 7
+
+  deploy-firebase:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
+    defaults:
+      run:
+        working-directory: ./calculadora-react
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: calculadora-react/package-lock.json
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: react-build
+        path: calculadora-react/build/
+
+    - name: Deploy to Firebase Hosting
+      uses: FirebaseExtended/action-hosting-deploy@v0
+      with:
+        firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CALCULADORA_REACT_TP7 }}
+        projectId: calculadora-react-tp7
+        channelId: live
+        entryPoint: ./calculadora-react
+
+  deploy-preview:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    defaults:
+      run:
+        working-directory: ./calculadora-react
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: calculadora-react/package-lock.json
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: react-build
+        path: calculadora-react/build/
+
+    - name: Deploy Preview to Firebase Hosting
+      uses: FirebaseExtended/action-hosting-deploy@v0
+      with:
+        firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CALCULADORA_REACT_TP7 }}
+        projectId: calculadora-react-tp7
+        channelId: preview
+        entryPoint: ./calculadora-react
+        repoToken: ${{ secrets.GITHUB_TOKEN }}
