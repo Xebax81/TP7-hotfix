@@ -17,14 +17,14 @@ describe('Calculator Integration Tests', () => {
   });
 
   // Helper function para clicks más robustos
-  const safeClick = async (buttonName) => {
+  const safeClick = async buttonName => {
     await act(async () => {
       await user.click(screen.getByRole('button', { name: buttonName }));
     });
   };
 
   // Helper para clicks de texto (como cambio de modo)
-  const safeClickText = async (text) => {
+  const safeClickText = async text => {
     await act(async () => {
       await user.click(screen.getByText(text));
     });

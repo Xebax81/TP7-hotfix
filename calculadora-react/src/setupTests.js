@@ -7,7 +7,9 @@ beforeAll(() => {
     if (
       typeof args[0] === 'string' &&
       (args[0].includes('ReactDOMTestUtils.act') ||
-       args[0].includes('Warning: An update to Calculator inside a test was not wrapped in act'))
+        args[0].includes(
+          'Warning: An update to Calculator inside a test was not wrapped in act'
+        ))
     ) {
       return;
     }
