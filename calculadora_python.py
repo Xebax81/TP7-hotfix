@@ -98,7 +98,7 @@ def main():
     """Función principal para demostrar el uso de la calculadora"""
     calc = Calculadora()
     
-    print("=== Calculadora Básica ===")
+    print("==== Calculadora Básica ====")
     print(f"5 + 3 = {calc.sumar(5, 3)}")
     print(f"10 - 4 = {calc.restar(10, 4)}")
     print(f"6 * 7 = {calc.multiplicar(6, 7)}")
