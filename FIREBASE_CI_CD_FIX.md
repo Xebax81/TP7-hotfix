@@ -1,14 +1,26 @@
 # 🔧 Solución: Error Firebase Deploy CI/CD
 
-## 🚨 Problema
-```
-RequestError [HttpError]: Resource not accessible by integration
-status: 403
-'x-accepted-github-permissions': 'checks=write'
+## 🚨 Problemas Comunes y Soluciones
+
+### 1. Error: "Resource not accessible by integration"
+**Causa**: Permisos insuficientes del GITHUB_TOKEN
+**Solución**: Usar workflow simple con FIREBASE_TOKEN
+
+### 2. Error: "Firebase CLI v14.17.0 is incompatible with Node.js v18.20.8"
+**Causa**: Versión de Node.js incompatible con Firebase CLI
+**Solución**: ✅ **RESUELTO** - Workflows actualizados a Node.js 20
+
+```yaml
+# ANTES (fallaba)
+node-version: '18'
+
+# DESPUÉS (funciona)
+node-version: '20'
 ```
 
-## 🎯 Causa
-El token `GITHUB_TOKEN` de GitHub Actions no tiene permisos suficientes para crear "check runs" que requiere la action `FirebaseExtended/action-hosting-deploy@v0`.
+### 3. Error: "Invalid project id: Calculadora-react-tp7"
+**Causa**: Project ID con mayúsculas
+**Solución**: ✅ **RESUELTO** - Cambiado a `calculadora-react-tp7`
 
 ## ✅ Soluciones Implementadas
 
