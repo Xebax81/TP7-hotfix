@@ -213,7 +213,7 @@ jobs:
     name: Approve Deployment
     runs-on: ubuntu-latest
     # CONDICIONES: Se ejecuta solo en ramas principales o PRs hacia develop
-    if: github.head_ref == 'test'
+    if: github.base_ref == 'test'
     environment: production  # Activa el gate de aprobación manual configurado en GitHub
     
     steps:
@@ -260,6 +260,7 @@ jobs:
     needs: approval-test-to-production # Solo se ejecuta después de aprobación manual
     environment: production
     # CONDICIONES: Mismas que approval-gate para consistencia
+    if: github.base_ref == 'test'
     defaults:
       run:
         working-directory: ./calculadora-react
