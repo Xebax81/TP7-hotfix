@@ -16,9 +16,9 @@ name: React Calculator - Firebase Deploy
 # - Pull Request hacia la rama 'develop'
 on:
   push:
-    branches: [ develop, test, production ]
+    branches: [ feature/Pruebas, develop, test, production ]
   pull_request:
-    branches: [ develop, test, production ]
+    branches: [ feature/Pruebas, develop, test, production ]
 
 # PERMISOS: Qué puede hacer este workflow en GitHub
 permissions:
@@ -38,7 +38,7 @@ jobs:
   code-quality:
     name: Code Quality & Linting
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' || github.base_ref == 'develop'
+    if: github.ref == 'refs/heads/feature/Pruebas' || github.base_ref == 'feature/Pruebas'
     defaults:
       run:
         working-directory: ./calculadora-react
@@ -80,7 +80,8 @@ jobs:
   build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/production' || github.base_ref == 'test'
+    needs: approve-develop-to-test-manual
+    if: github.ref == 'refs/heads/develop' || github.base_ref == 'test'
     defaults:
       run:
         working-directory: ./calculadora-react
@@ -129,8 +130,8 @@ jobs:
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
-    needs: build-and-test # Solo se ejecuta si build-and-test pasa exitosamente
-    if: github.ref == 'refs/heads/production' || github.base_ref == 'test'
+    needs: [build-and-test, approve-develop-to-test-manual] # Solo se ejecuta si build-and-test pasa exitosamente
+    if: github.ref == 'refs/heads/develop' || github.base_ref == 'test'
     defaults:
       run:
         working-directory: ./calculadora-react
@@ -168,8 +169,8 @@ jobs:
   regression-tests:
     name: Regression Tests
     runs-on: ubuntu-latest
-    needs:  integration-tests 
-    if: github.ref == 'refs/heads/production' || github.base_ref == 'test'
+    needs:  [integration-tests, approve-develop-to-test-manual] 
+    if: github.ref == 'refs/heads/develop' || github.base_ref == 'test'
     defaults:
       run:
         working-directory: ./calculadora-react
@@ -235,7 +236,6 @@ jobs:
 
   approve-develop-to-test-manual:
     name: Manual Approval Develop → Test
-    needs: code-quality
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     environment: production
@@ -258,10 +258,10 @@ jobs:
   # =================================================================
   deploy-firebase:
     name: Deploy to Firebase
-    needs: [approval-test-to-production]  # Solo se ejecuta después de aprobación manual
+    needs: approval-test-to-production # Solo se ejecuta después de aprobación manual
     runs-on: ubuntu-latest
     # CONDICIONES: Mismas que approval-gate para consistencia
-    if: github.ref == 'refs/heads/production'
+    if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./calculadora-react
