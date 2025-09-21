@@ -9,6 +9,7 @@
 # 5. Manual Approval - Gate de aprobación manual para producción
 # 6. Deploy to Firebase - Despliega a Firebase Hosting
 # =================================================================
+
 name: React Calculator - Firebase Deploy
 
 # TRIGGERS: Cuándo se ejecuta el workflow
@@ -35,7 +36,7 @@ jobs:
   code-quality:
     name: Code Quality & Linting
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/feature/Pruebas' || github.base_ref == 'feature/Pruebas'
+    if: ${{ github.ref == 'refs/heads/feature/Pruebas' || github.base_ref == 'refs/heads/feature/Pruebas' }}
     defaults:
       run:
         working-directory: ./calculadora-react
