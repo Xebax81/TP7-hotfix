@@ -16,7 +16,7 @@ name: React Calculator - Firebase Deploy
 # - Pull Request hacia la rama 'develop'
 on:
   pull_request:
-    branches: [feature/Pruebas, develop, test, production]
+    branches: [feature/Pruebas, develop, test, produccion]
 
 # PERMISOS: Qué puede hacer este workflow en GitHub
 permissions:
@@ -259,7 +259,7 @@ jobs:
     needs: approval-test-to-production # Solo se ejecuta después de aprobación manual
     runs-on: ubuntu-latest
     # CONDICIONES: Mismas que approval-gate para consistencia
-    if: ${{ github.base_ref == 'test' }}
+    if: ${{ github.head_ref == 'test' }}
     defaults:
       run:
         working-directory: ./calculadora-react
@@ -268,7 +268,19 @@ jobs:
     # Descarga el código fuente (necesario para archivos de configuración)
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
+    # Configura entorno Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: calculadora-react/package-lock.json   
+    
+    # Instala dependencias
+    - name: Install dependencies
+      run: npm ci
+    
     # Construye la aplicación para producción
     - name: Build application
       run: npm run build
