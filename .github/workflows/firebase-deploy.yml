@@ -258,10 +258,10 @@ jobs:
   # =================================================================
   deploy-firebase:
     name: Deploy to Firebase
-    needs: [approval-test-to-production]  # Solo se ejecuta después de aprobación manual
+    needs: approval-test-to-production # Solo se ejecuta después de aprobación manual
     runs-on: ubuntu-latest
     # CONDICIONES: Mismas que approval-gate para consistencia
-    if: github.ref == 'refs/heads/production'
+    if: github.ref == 'refs/heads/test'
     defaults:
       run:
         working-directory: ./calculadora-react
