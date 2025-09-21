@@ -270,7 +270,19 @@ jobs:
     # Descarga el código fuente (necesario para archivos de configuración)
     - name: Checkout code
       uses: actions/checkout@v4
+      
+    # Construye la aplicación para producción
+    - name: Build application
+      run: npm run build
 
+    # Guarda los archivos compilados como artifacts para uso en deploy
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: react-build-${{ github.sha }}
+        path: calculadora-react/build/
+        retention-days: 5
+        
     # Descarga los artifacts de build generados en la etapa build-and-test
     - name: Download build artifacts
       uses: actions/download-artifact@v4
