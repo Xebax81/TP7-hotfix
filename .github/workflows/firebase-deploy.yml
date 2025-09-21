@@ -9,7 +9,6 @@
 # 5. Manual Approval - Gate de aprobación manual para producción
 # 6. Deploy to Firebase - Despliega a Firebase Hosting
 # =================================================================
-
 name: React Calculator - Firebase Deploy
 
 # TRIGGERS: Cuándo se ejecuta el workflow
