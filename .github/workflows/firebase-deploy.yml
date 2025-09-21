@@ -16,7 +16,7 @@ name: React Calculator - Firebase Deploy
 # - Pull Request hacia la rama 'develop'
 on:
   pull_request:
-    branches: [ feature/Pruebas, develop, test, production ]
+    branches: [feature/Pruebas, develop, test, production]
 
 # PERMISOS: Qué puede hacer este workflow en GitHub
 permissions:
@@ -36,7 +36,7 @@ jobs:
   code-quality:
     name: Code Quality & Linting
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/feature/Pruebas' || github.base_ref == 'feature/Pruebas'
+    if: ${{ startsWith(github.head_ref, 'feature/') }}
     defaults:
       run:
         working-directory: ./calculadora-react
@@ -79,7 +79,7 @@ jobs:
     name: Build & Test
     runs-on: ubuntu-latest
     needs: approve-develop-to-test-manual
-    if: github.ref == 'refs/heads/develop' || github.base_ref == 'test'
+    if: ${{ github.head_ref == 'develop' || github.base_ref == 'test' }}
     defaults:
       run:
         working-directory: ./calculadora-react
@@ -129,7 +129,7 @@ jobs:
     name: Integration Tests
     runs-on: ubuntu-latest
     needs: [build-and-test, approve-develop-to-test-manual] # Solo se ejecuta si build-and-test pasa exitosamente
-    if: github.ref == 'refs/heads/develop' || github.base_ref == 'test'
+    if: ${{ github.head_ref == 'develop' || github.base_ref == 'test' }}
     defaults:
       run:
         working-directory: ./calculadora-react
@@ -168,7 +168,7 @@ jobs:
     name: Regression Tests
     runs-on: ubuntu-latest
     needs:  [integration-tests, approve-develop-to-test-manual] 
-    if: github.ref == 'refs/heads/develop' || github.base_ref == 'test'
+    if: ${{ github.head_ref == 'develop' || github.base_ref == 'test' }}
     defaults:
       run:
         working-directory: ./calculadora-react
@@ -213,7 +213,7 @@ jobs:
     name: Approve Deployment
     runs-on: ubuntu-latest
     # CONDICIONES: Se ejecuta solo en ramas principales o PRs hacia develop
-    if: github.ref == 'refs/heads/test'
+    if: ${{ github.base_ref == 'test' }}
     environment: production  # Activa el gate de aprobación manual configurado en GitHub
     
     steps:
@@ -235,7 +235,7 @@ jobs:
   approve-develop-to-test-manual:
     name: Manual Approval Develop → Test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
+    if: ${{ github.base_ref == 'develop' }}
     environment: production
     steps:
     - name: Manual approval checkpoint
@@ -259,7 +259,7 @@ jobs:
     needs: approval-test-to-production # Solo se ejecuta después de aprobación manual
     runs-on: ubuntu-latest
     # CONDICIONES: Mismas que approval-gate para consistencia
-    if: github.ref == 'refs/heads/test'
+    if: ${{ github.base_ref == 'test' }}
     defaults:
       run:
         working-directory: ./calculadora-react
