@@ -16,7 +16,7 @@ name: React Calculator - Firebase Deploy
 # - Pull Request hacia la rama 'develop'
 on:
   pull_request:
-    branches: [ feature/Pruebas, develop, test, production ]
+    branches: feature/Pruebas, develop, test, production 
 
 # PERMISOS: Qué puede hacer este workflow en GitHub
 permissions:
