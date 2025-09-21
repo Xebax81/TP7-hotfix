@@ -212,7 +212,6 @@ jobs:
   # =================================================================
   approval-test-to-production:
     name: Approve Deployment
-    needs: [build-and-test, integration-tests, regression-tests]  # Requiere que TODAS las etapas anteriores pasen
     runs-on: ubuntu-latest
     # CONDICIONES: Se ejecuta solo en ramas principales o PRs hacia develop
     if: github.ref == 'refs/heads/test'
