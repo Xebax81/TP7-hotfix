@@ -1,18 +1,38 @@
+# =================================================================
+# CI/CD Pipeline: React Calculator - Firebase Deploy
+# =================================================================
+# Este workflow implementa un pipeline completo de CI/CD con 5 etapas:
+# 1. Code Quality & Linting - Verifica estándares de código
+# 2. Build & Test - Construye la aplicación y ejecuta tests unitarios  
+# 3. Integration Tests - Ejecuta tests de integración
+# 4. Regression Tests - Ejecuta tests de regresión
+# 5. Manual Approval - Gate de aprobación manual para producción
+# 6. Deploy to Firebase - Despliega a Firebase Hosting
+# =================================================================
+
 name: React Calculator - Firebase Deploy
 
-
-
+# TRIGGERS: Cuándo se ejecuta el workflow
+# - Pull Request hacia la rama 'develop'
 on:
   pull_request:
     branches: [ develop]
 
+# PERMISOS: Qué puede hacer este workflow en GitHub
 permissions:
-  contents: read
-  checks: write
-  statuses: write
-  pull-requests: write
+  contents: read          # Leer contenido del repositorio
+  checks: write          # Escribir checks de estado
+  statuses: write        # Escribir estados de commit
+  pull-requests: write   # Escribir comentarios en PRs
 
 jobs:
+  # =================================================================
+  # ETAPA 1: CALIDAD DE CÓDIGO
+  # =================================================================
+  # Propósito: Verificar que el código cumple con estándares de calidad
+  # - ESLint: Detecta errores de sintaxis y problemas de código
+  # - Prettier: Verifica que el formato del código sea consistente
+  # =================================================================
   code-quality:
     name: Code Quality & Linting
     runs-on: ubuntu-latest
@@ -21,9 +41,11 @@ jobs:
         working-directory: ./calculadora-react
     
     steps:
+    # Descarga el código fuente del repositorio
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # Configura Node.js v20 con cache de npm para acelerar builds
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -31,27 +53,41 @@ jobs:
         cache: 'npm'
         cache-dependency-path: calculadora-react/package-lock.json
 
+    # Instala dependencias usando npm ci (más rápido y determinista que npm install)
     - name: Install dependencies
       run: npm ci
 
+    # Ejecuta ESLint para detectar errores de código y problemas de estilo
     - name: Run ESLint
       run: npm run lint
 
+    # Verifica que el código esté formateado según las reglas de Prettier
     - name: Check Prettier formatting
       run: npm run format:check
 
+  # =================================================================
+  # ETAPA 2: BUILD Y TESTS UNITARIOS  
+  # =================================================================
+  # Propósito: Construir la aplicación y ejecutar tests unitarios
+  # - Compila el código TypeScript/JavaScript
+  # - Ejecuta tests unitarios con cobertura
+  # - Genera build de producción
+  # - Guarda artifacts para etapas posteriores
+  # =================================================================
   build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
-    needs: code-quality
+    needs: code-quality  # Solo se ejecuta si code-quality pasa exitosamente
     defaults:
       run:
         working-directory: ./calculadora-react
     
     steps:
+    # Descarga el código fuente
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # Configura entorno Node.js
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -59,15 +95,19 @@ jobs:
         cache: 'npm'
         cache-dependency-path: calculadora-react/package-lock.json
 
+    # Instala dependencias
     - name: Install dependencies
       run: npm ci
 
+    # Ejecuta tests unitarios con reporte de cobertura
     - name: Run tests
       run: npm test -- --coverage --watchAll=false
 
+    # Construye la aplicación para producción
     - name: Build application
       run: npm run build
 
+    # Guarda los archivos compilados como artifacts para uso en deploy
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -75,18 +115,28 @@ jobs:
         path: calculadora-react/build/
         retention-days: 5
 
+  # =================================================================
+  # ETAPA 3: TESTS DE INTEGRACIÓN
+  # =================================================================
+  # Propósito: Verificar que los componentes funcionen bien juntos
+  # - Tests que simulan flujos completos de usuario
+  # - Validación de interacciones entre componentes
+  # - Verificación de workflows complejos
+  # =================================================================
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
-    needs: build-and-test
+    needs: build-and-test  # Solo se ejecuta si build-and-test pasa exitosamente
     defaults:
       run:
         working-directory: ./calculadora-react
     
     steps:
+    # Descarga el código fuente
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # Configura entorno Node.js
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -94,24 +144,37 @@ jobs:
         cache: 'npm'
         cache-dependency-path: calculadora-react/package-lock.json
 
+    # Instala dependencias
     - name: Install dependencies
       run: npm ci
 
+    # Ejecuta tests de integración específicamente
+    # Filtra solo tests que contienen "Integration" en el nombre
     - name: Run integration tests
       run: npm test -- --testNamePattern="Integration" --watchAll=false --verbose
 
+  # =================================================================
+  # ETAPA 4: TESTS DE REGRESIÓN
+  # =================================================================
+  # Propósito: Verificar que los cambios no rompan funcionalidad existente
+  # - Tests que validan que features anteriores sigan funcionando
+  # - Detección de regresiones en funcionalidad crítica
+  # - Validación de compatibilidad hacia atrás
+  # =================================================================
   regression-tests:
     name: Regression Tests
     runs-on: ubuntu-latest
-    needs: integration-tests
+    needs: integration-tests  # Solo se ejecuta si integration-tests pasa exitosamente
     defaults:
       run:
         working-directory: ./calculadora-react
     
     steps:
+    # Descarga el código fuente
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # Configura entorno Node.js
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -119,51 +182,88 @@ jobs:
         cache: 'npm'
         cache-dependency-path: calculadora-react/package-lock.json
 
+    # Instala dependencias
     - name: Install dependencies
       run: npm ci
 
+    # Ejecuta tests de regresión específicamente  
+    # Filtra solo tests que contienen "Regression" en el nombre
     - name: Run regression tests
       run: npm test -- --testNamePattern="Regression" --watchAll=false --verbose
 
-  
+  # =================================================================
+  # ETAPA 5: GATE DE APROBACIÓN MANUAL
+  # =================================================================
+  # Propósito: Punto de control humano antes del despliegue a producción
+  # - Requiere aprobación manual de un reviewer autorizado
+  # - Pausa el pipeline hasta que alguien apruebe el despliegue
+  # - Permite revisar resultados de tests antes de producción
+  # - Implementa governance y control de cambios
+  # 
+  # CONFIGURACIÓN REQUERIDA:
+  # 1. Ir a Settings > Environments en GitHub
+  # 2. Crear environment "production" 
+  # 3. Configurar "Required reviewers"
+  # =================================================================
   approval-gate:
     name: Approve Deployment
-    needs: [code-quality, build-and-test, integration-tests, regression-tests]
+    needs: [code-quality, build-and-test, integration-tests, regression-tests]  # Requiere que TODAS las etapas anteriores pasen
     runs-on: ubuntu-latest
+    # CONDICIONES: Se ejecuta solo en ramas principales o PRs hacia develop
     if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/produccion' || github.base_ref == 'develop'
-    environment: production  
+    environment: production  # Activa el gate de aprobación manual configurado en GitHub
     
     steps:
+    # Muestra resumen de éxito y espera aprobación manual
     - name: Manual approval checkpoint
       run: |
-        echo "All tests passed successfully!"
-        echo "Code quality: PASSED"
-        echo "Unit tests: PASSED" 
-        echo "Integration tests: PASSED"
-        echo "Regression tests: PASSED"
+        echo "✅ ¡TODOS LOS TESTS PASARON EXITOSAMENTE!"
+        echo "================================"
+        echo "✅ Code Quality & Linting: PASSED"
+        echo "✅ Build & Unit Tests: PASSED" 
+        echo "✅ Integration Tests: PASSED"
+        echo "✅ Regression Tests: PASSED"
+        echo "================================"
+        echo "🚀 LISTO PARA DESPLEGAR A PRODUCCIÓN"
         echo ""
-        echo "Ready to deploy to production!"
-       
+        echo "⏳ Esperando aprobación manual..."
+        echo "📝 Un reviewer autorizado debe aprobar este despliegue"
 
+  # =================================================================
+  # ETAPA 6: DESPLIEGUE A FIREBASE HOSTING
+  # =================================================================
+  # Propósito: Despliega la aplicación a Firebase Hosting en producción
+  # - Descarga los artifacts generados en la etapa de build
+  # - Despliega al canal 'live' de Firebase Hosting
+  # - Usa service account para autenticación segura
+  # - Solo se ejecuta después de aprobación manual
+  # =================================================================
   deploy-firebase:
     name: Deploy to Firebase
-    needs: [approval-gate]
+    needs: [approval-gate]  # Solo se ejecuta después de aprobación manual
     runs-on: ubuntu-latest
+    # CONDICIONES: Mismas que approval-gate para consistencia
     if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/produccion' || github.base_ref == 'develop'
     defaults:
       run:
         working-directory: ./calculadora-react
     
     steps:
+    # Descarga el código fuente (necesario para archivos de configuración)
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # Descarga los artifacts de build generados en la etapa build-and-test
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
         name: react-build-${{ github.sha }}
         path: calculadora-react/build/
 
+    # Despliega a Firebase Hosting usando service account
+    # - projectId: ID del proyecto Firebase
+    # - channelId: 'live' significa producción (vs preview channels)
+    # - firebaseServiceAccount: Credenciales seguras almacenadas en GitHub Secrets
     - name: Deploy to Firebase Hosting
       uses: FirebaseExtended/action-hosting-deploy@v0
       with:
@@ -171,3 +271,29 @@ jobs:
         projectId: calculadora-react-tp7
         channelId: live
         entryPoint: ./calculadora-react
+
+# =================================================================
+# RESUMEN DEL PIPELINE:
+# =================================================================
+# 
+# FLUJO COMPLETO:
+# 1. Code Quality (ESLint + Prettier) 
+#    ↓ 
+# 2. Build & Test (npm test + npm build)
+#    ↓
+# 3. Integration Tests (flujos de usuario)
+#    ↓  
+# 4. Regression Tests (detección de regresiones)
+#    ↓
+# 5. 🛑 MANUAL APPROVAL (control humano)
+#    ↓
+# 6. 🚀 Deploy to Firebase (producción)
+#
+# BENEFICIOS:
+# - ✅ Calidad garantizada antes de producción
+# - 🔒 Control de acceso con aprobación manual  
+# - 📊 Cobertura completa de testing
+# - 🚀 Despliegue automatizado pero controlado
+# - 📝 Trazabilidad completa del proceso
+#
+# =================================================================
