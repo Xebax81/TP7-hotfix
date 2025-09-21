@@ -80,7 +80,6 @@ jobs:
   build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
-    needs: approve-develop-to-test-manual
     if: github.ref == 'refs/heads/production' || github.base_ref == 'test'
     defaults:
       run:
@@ -130,7 +129,7 @@ jobs:
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
-    needs: approve-develop-to-test-manual # Solo se ejecuta si build-and-test pasa exitosamente
+    needs: build-and-test # Solo se ejecuta si build-and-test pasa exitosamente
     if: github.ref == 'refs/heads/production' || github.base_ref == 'test'
     defaults:
       run:
@@ -169,7 +168,7 @@ jobs:
   regression-tests:
     name: Regression Tests
     runs-on: ubuntu-latest
-    needs: approve-develop-to-test-manual  
+    needs:  integration-tests 
     if: github.ref == 'refs/heads/production' || github.base_ref == 'test'
     defaults:
       run:
@@ -213,7 +212,6 @@ jobs:
   # =================================================================
   approval-test-to-production:
     name: Approve Deployment
-    needs: [build-and-test, integration-tests, regression-tests]  # Requiere que TODAS las etapas anteriores pasen
     runs-on: ubuntu-latest
     # CONDICIONES: Se ejecuta solo en ramas principales o PRs hacia develop
     if: github.ref == 'refs/heads/test'
