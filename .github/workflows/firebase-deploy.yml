@@ -16,9 +16,9 @@ name: React Calculator - Firebase Deploy
 # - Pull Request hacia la rama 'develop'
 on:
   push:
-    branches: [ develop, test, production ]
+    branches: [ feature, develop, test, production ]
   pull_request:
-    branches: [ develop, test, production ]
+    branches: [ feature, develop, test, production ]
 
 # PERMISOS: Qué puede hacer este workflow en GitHub
 permissions:
@@ -38,7 +38,7 @@ jobs:
   code-quality:
     name: Code Quality & Linting
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' || github.base_ref == 'develop'
+    if: github.ref == 'refs/heads/feature' || github.base_ref == 'feature'
     defaults:
       run:
         working-directory: ./calculadora-react
