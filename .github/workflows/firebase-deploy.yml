@@ -80,7 +80,7 @@ jobs:
   build-and-test:
     name: Build & Test
     runs-on: ubuntu-latest
-    needs: approve-develop-to-test
+    needs: approve-develop-to-test-manual
     if: github.ref == 'refs/heads/production' || github.base_ref == 'test'
     defaults:
       run:
@@ -130,7 +130,7 @@ jobs:
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
-    needs: build-and-test  # Solo se ejecuta si build-and-test pasa exitosamente
+    needs: approve-develop-to-test-manual # Solo se ejecuta si build-and-test pasa exitosamente
     if: github.ref == 'refs/heads/production' || github.base_ref == 'test'
     defaults:
       run:
@@ -169,7 +169,7 @@ jobs:
   regression-tests:
     name: Regression Tests
     runs-on: ubuntu-latest
-    needs: integration-tests  # Solo se ejecuta si integration-tests pasa exitosamente
+    needs: approve-develop-to-test-manual  
     if: github.ref == 'refs/heads/production' || github.base_ref == 'test'
     defaults:
       run:
@@ -235,16 +235,20 @@ jobs:
         echo "⏳ Esperando aprobación manual..."
         echo "📝 Un reviewer autorizado debe aprobar este despliegue"
 
-  approve-develop-to-test:
-    name: Auto-approve Develop → Test
-    needs: [code-quality]
+  approve-develop-to-test-manual:
+    name: Manual Approval Develop → Test
+    needs: code-quality
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
+    environment: production
     steps:
-    - name: Approval summary
+    - name: Manual approval checkpoint
       run: |
-        echo "✅ Code Quality PASADO"
-        echo "🚀 Preparando merge hacia TEST"
+        echo "✅ Code Quality PASO"
+        echo "===================================="
+        echo "🚀 LISTO PARA EJECUTAR UNIT, INTEGRATION Y REGRESSION TESTS EN TEST"
+        echo "⏳ Esperando aprobación manual..."
+        echo "📝 Un reviewer autorizado debe aprobar este paso"
   # =================================================================
   # ETAPA 6: DESPLIEGUE A FIREBASE HOSTING
   # =================================================================
