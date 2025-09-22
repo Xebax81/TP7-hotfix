@@ -257,10 +257,11 @@ jobs:
     name: Deploy to Firebase
     runs-on: ubuntu-latest
     needs: approval-test-to-production # Solo se ejecuta después de aprobación manual
-    environment: production
+    
     # CONDICIONES: Mismas que approval-gate para consistencia
     
     if: ${{ github.head_ref == 'test' }}
+    
     defaults:
       run:
         working-directory: ./calculadora-react
@@ -308,7 +309,7 @@ jobs:
     - name: Deploy to Firebase Hosting
       uses: FirebaseExtended/action-hosting-deploy@v0
       with:
-        firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CALCULADORA_REACT_TP7 }}
+        firebaseServiceAccount: ${{secrets.FIREBASE_SERVICE_ACCOUNT_CALCULADORA_REACT_TP7}}
         projectId: calculadora-react-tp7
         channelId: live
         entryPoint: ./calculadora-react
