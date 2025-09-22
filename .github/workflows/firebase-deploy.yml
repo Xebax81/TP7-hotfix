@@ -260,6 +260,7 @@ jobs:
     runs-on: ubuntu-latest
     # CONDICIONES: Mismas que approval-gate para consistencia
     if: ${{ github.head_ref == 'test' }}
+    environment: production  
     defaults:
       run:
         working-directory: ./calculadora-react
